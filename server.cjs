@@ -6,8 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const API_KEY = 'addff671-63f0-43b0-a062-18392af6bb37';
-const AGENT_ID = 'f9f0c202-6ba0-42c7-a66f-9a6f0a94f8e7';
+// Use environment variables for security
+const API_KEY = process.env.API_KEY;
+const AGENT_ID = process.env.AGENT_ID;
 
 app.post('/api/vapi', async (req, res) => {
   const { message } = req.body;
@@ -21,8 +22,10 @@ app.post('/api/vapi', async (req, res) => {
       body: JSON.stringify({ message })
     });
     const data = await response.json();
+    console.log('Vapi.ai response:', data); // Log the full response for debugging
     res.json(data);
   } catch (err) {
+    console.error('Error in /api/vapi:', err); // Log the error for debugging
     res.status(500).json({ error: 'Server error' });
   }
 });
