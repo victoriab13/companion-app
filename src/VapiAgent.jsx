@@ -10,6 +10,9 @@ const VapiAgent = () => {
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
 
+  // Use the environment variable for your backend API URL
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const startListening = () => {
     if (!('webkitSpeechRecognition' in window)) {
       alert('Speech recognition not supported in this browser.');
@@ -23,9 +26,9 @@ const VapiAgent = () => {
     recognition.onresult = async (event) => {
       const transcript = event.results[0][0].transcript;
       setMessages((msgs) => [...msgs, { from: 'user', text: transcript }]);
-      // Call your backend instead of Vapi SDK
+      // Call your backend using the environment variable
       try {
-        const response = await fetch('http://localhost:3001/api/vapi', {
+        const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: transcript })
