@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch');
+// Correct way to use node-fetch v3 in CommonJS:
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const app = express();
 app.use(cors());
