@@ -13,8 +13,14 @@ const VapiAgent = () => {
     const vapi = new Vapi(import.meta.env.VITE_VAPI_KEY);
     vapiRef.current = vapi;
 
+    // Agent's speech
     vapi.on("speech", (data) => {
       setMessages((msgs) => [...msgs, { from: "agent", text: data.transcript }]);
+    });
+
+    // User's speech (transcription)
+    vapi.on("transcript", (data) => {
+      setMessages((msgs) => [...msgs, { from: "user", text: data.transcript }]);
     });
 
     vapi.on("error", (e) => {
